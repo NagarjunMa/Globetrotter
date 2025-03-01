@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f3f4f6;
+}
+
+.clue-card {
+  @apply bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-primary-500;
+  transition: transform 0.3s ease;
+}
+
+.clue-card:hover {
+  transform: translateY(-5px);
+}
+
+.answer-option {
+  @apply flex items-center bg-white rounded-lg shadow-md p-4 mb-4 border border-gray-200 hover:border-primary-500 cursor-pointer transition-all;
+}
+
+.answer-option.selected {
+  @apply border-primary-500 bg-primary-50;
+}
+
+.answer-option.correct {
+  @apply border-green-500 bg-green-50;
+}
+
+.answer-option.incorrect {
+  @apply border-red-500 bg-red-50;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-colors;
+}
+
+.btn-primary {
+  @apply bg-primary-500 text-white hover:bg-primary-600;
+}
+
+.btn-secondary {
+  @apply bg-gray-500 text-white hover:bg-gray-600;
+}
+
+.btn-success {
+  @apply bg-green-500 text-white hover:bg-green-600;
+}
+
+.btn-danger {
+  @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+.btn-outline {
+  @apply border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white;
+}
