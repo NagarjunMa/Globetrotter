@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGlobeAmericas, FaUserPlus } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-import { useAuth } from './../../hooks/useAuth';
-import Form from './../common/Form';
-import FormInput from './../common/FormInput';
-import { createFormValidation } from './../../utils/validation';
+import { useAuth } from '../../hooks/useAuth';
 
 const Register = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const { register, isAuthenticated, loading } = useAuth();
     const navigate = useNavigate();
-    const { register, isAuthenticated, loading, error } = useAuth();
-    const validationRules = createFormValidation();
 
     useEffect(() => {
         // Redirect if logged in
@@ -19,17 +19,40 @@ const Register = () => {
         }
     }, [isAuthenticated, navigate]);
 
-    useEffect(() => {
-        if (error) {
-            toast.error(error);
-        }
-    }, [error]);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const handleSubmit = async (formData) => {
+        // Validate inputs
+        if (!username || !password || !confirmPassword) {
+            setError('Please fill in all fields');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters long');
+            return;
+        }
+
         try {
-            await register(formData.username, formData.password);
+            // Store debug info in localStorage
+            localStorage.setItem('register_attempt', JSON.stringify({
+                username,
+                timestamp: new Date().toISOString()
+            }));
+
+            await register(username, password);
+            navigate('/game');
         } catch (err) {
-            // Error is handled in useAuth hook and displayed via toast
+            localStorage.setItem('register_error', JSON.stringify({
+                error: err?.message || 'Registration failed',
+                timestamp: new Date().toISOString()
+            }));
+            setError(err.message || 'Registration failed');
         }
     };
 
@@ -41,99 +64,71 @@ const Register = () => {
                 <p className="mt-2 text-gray-600">Create an account to start your journey</p>
             </div>
 
-            <Form
-                initialValues={{
-                    username: '',
-                    password: '',
-                    confirmPassword: ''
-                }}
-                validationRules={validationRules}
-                onSubmit={handleSubmit}
-            >
-                {({ formData, errors, touched, isSubmitting, handleChange, handleBlur }) => (
-                    <>
-                        <FormInput
-                            name="username"
-                            label="Username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={errors.username}
-                            touched={touched.username}
-                            placeholder="Choose a unique username"
-                            required
-                            autoComplete="username"
-                        />
+            {error && (
+                <div className="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
+                    <p>{error}</p>
+                </div>
+            )}
 
-                        <FormInput
-                            name="password"
-                            type="password"
-                            label="Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={errors.password}
-                            touched={touched.password}
-                            placeholder="Choose a password"
-                            required
-                            autoComplete="new-password"
-                        />
+            <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                    <label htmlFor="username" className="block text-gray-700 font-medium mb-2">
+                        Username
+                    </label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Choose a unique username"
+                        required
+                    />
+                </div>
 
-                        <div className="mt-2 mb-4 text-sm">
-                            <p className="text-gray-600 mb-1">Password must contain:</p>
-                            <ul className="grid grid-cols-2 gap-1">
-                                <li className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
-                                    <span className={`inline-block w-3 h-3 mr-2 rounded-full ${/[A-Z]/.test(formData.password) ? 'bg-green-600' : 'bg-gray-300'}`}></span>
-                                    Uppercase letter
-                                </li>
-                                <li className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
-                                    <span className={`inline-block w-3 h-3 mr-2 rounded-full ${/[a-z]/.test(formData.password) ? 'bg-green-600' : 'bg-gray-300'}`}></span>
-                                    Lowercase letter
-                                </li>
-                                <li className={`flex items-center ${/[0-9]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
-                                    <span className={`inline-block w-3 h-3 mr-2 rounded-full ${/[0-9]/.test(formData.password) ? 'bg-green-600' : 'bg-gray-300'}`}></span>
-                                    Number
-                                </li>
-                                <li className={`flex items-center ${/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
-                                    <span className={`inline-block w-3 h-3 mr-2 rounded-full ${/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? 'bg-green-600' : 'bg-gray-300'}`}></span>
-                                    Special character
-                                </li>
-                                <li className={`flex items-center ${formData.password.length >= 6 ? 'text-green-600' : 'text-gray-500'}`}>
-                                    <span className={`inline-block w-3 h-3 mr-2 rounded-full ${formData.password.length >= 6 ? 'bg-green-600' : 'bg-gray-300'}`}></span>
-                                    At least 6 characters
-                                </li>
-                            </ul>
-                        </div>
+                <div className="mb-4">
+                    <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Choose a password (min. 6 characters)"
+                        required
+                    />
+                </div>
 
-                        <FormInput
-                            name="confirmPassword"
-                            type="password"
-                            label="Confirm Password"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={errors.confirmPassword}
-                            touched={touched.confirmPassword}
-                            placeholder="Confirm your password"
-                            required
-                            autoComplete="new-password"
-                        />
+                <div className="mb-6">
+                    <label htmlFor="confirmPassword" className="block text-gray-700 font-medium mb-2">
+                        Confirm Password
+                    </label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Confirm your password"
+                        required
+                    />
+                </div>
 
-                        <button
-                            type="submit"
-                            disabled={isSubmitting || loading}
-                            className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center mt-6"
-                        >
-                            {isSubmitting || loading ? (
-                                <span className="animate-spin mr-2">&#9696;</span>
-                            ) : (
-                                <FaUserPlus className="mr-2" />
-                            )}
-                            {isSubmitting || loading ? 'Creating Account...' : 'Register'}
-                        </button>
-                    </>
-                )}
-            </Form>
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center"
+                >
+                    {loading ? (
+                        <span className="animate-spin mr-2">&#9696;</span>
+                    ) : (
+                        <FaUserPlus className="mr-2" />
+                    )}
+                    {loading ? 'Creating Account...' : 'Register'}
+                </button>
+            </form>
 
             <div className="mt-6 text-center">
                 <p className="text-gray-600">

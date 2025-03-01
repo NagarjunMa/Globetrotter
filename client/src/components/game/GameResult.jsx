@@ -48,7 +48,14 @@ const GameResult = ({ result, onPlayAgain, onChallenge }) => {
                         <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1, rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 0.6, type: 'spring' }}
+                            transition={{
+                                scale: { duration: 0.6 },
+                                rotate: {
+                                    duration: 0.6,
+                                    times: [0, 0.33, 0.66, 1],
+                                    ease: "easeInOut"
+                                }
+                            }}
                             className="mr-3"
                         >
                             <FaTrophy className="text-white text-3xl" />
