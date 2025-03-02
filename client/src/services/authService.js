@@ -3,6 +3,7 @@ import api from './api';
 // Register a new user
 export const register = async (username, password) => {
   try {
+    console.log('API URL:', process.env.REACT_APP_API_URL);
     const response = await api.post('/auth/register', { username, password });
     if (response.data.success) {
       localStorage.setItem('token', response.data.token);
