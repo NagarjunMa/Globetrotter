@@ -11,10 +11,18 @@ const gameRoutes = require('./routes/gameRoutes');
 // Initialize express
 const app = express();
 
+// Set up CORS with specific origin
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'https://globetrotter-client.onrender.com',
+  credentials: true
+}));
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+
+a
 
 // Logging middleware in development
 if (process.env.NODE_ENV === 'development') {
