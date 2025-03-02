@@ -21,6 +21,16 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.get('/', (req, res) => {
+    res.status(200).json({ 
+      message: 'Globetrotter API is running', 
+      status: 'ok' 
+    });
+  });
+  
+  
+
+
 // Mount routes
 app.use('/api/auth', authRoutes);
 app.use('/api/destinations', destinationRoutes);
