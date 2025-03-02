@@ -1,4 +1,5 @@
 import api from './api';
+import { useNavigate } from 'react-router-dom';
 
 // Register a new user
 export const register = async (username, password) => {
@@ -35,7 +36,8 @@ export const login = async (username, password) => {
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
-  window.location.href = '/login';
+  const baseUrl = process.env.PUBLIC_URL || '';
+  window.location.href = `${baseUrl}/login`;
 };
 
 // Get current logged in user
