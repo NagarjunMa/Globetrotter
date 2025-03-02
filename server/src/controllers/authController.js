@@ -9,7 +9,8 @@ const { ErrorResponse } = require('../utils/errorHandler');
 exports.register = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-
+    console.log('Registering user:', username);
+    console.log('Password:', password);
     // Validate required fields
     if (!username || !password) {
       return res.status(400).json({
@@ -36,6 +37,7 @@ exports.register = async (req, res, next) => {
     // Generate token and send response
     sendTokenResponse(user, 201, res);
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: 'Error creating user account'
