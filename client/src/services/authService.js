@@ -12,6 +12,7 @@ export const register = async (username, password) => {
     }
     return response.data;
   } catch (error) {
+    console.log('Error:', error);
     throw error.response?.data || { success: false, message: 'Registration failed' };
   }
 };

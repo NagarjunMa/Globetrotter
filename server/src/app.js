@@ -11,11 +11,12 @@ const gameRoutes = require('./routes/gameRoutes');
 // Initialize express
 const app = express();
 
-// Set up CORS with specific origin
+// Configure CORS to allow all origins
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'https://globetrotter-client.onrender.com',
-  credentials: true
-}));
+    origin: '*', // Allow all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+  }));
 
 // Middleware
 app.use(express.json());
