@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGlobeAmericas, FaMapMarkedAlt, FaPuzzlePiece, FaTrophy, FaShareAlt } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
+import parisImage from './../assests/images/paris.jpg';
+import tokyoImage from './../assests/images/tokyo.jpg';
+import newYorkImage from './../assests/images/newyork.jpg';
+import cairoImage from './../assests/images/cairo.jpg';
+import sydneyImage from './../assests/images/sydney.jpg';
+import rioImage from './../assests/images/rio.jpg';
 
 const Home = () => {
     const { isAuthenticated } = useAuth();
@@ -78,7 +84,7 @@ const Home = () => {
             </div>
 
             {/* Destinations Preview */}
-            <div className="max-w-5xl mx-auto mb-12">
+            {/* <div className="max-w-5xl mx-auto mb-12">
                 <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
                     Explore Destinations Worldwide
                 </h2>
@@ -95,6 +101,40 @@ const Home = () => {
                             <div className="p-4">
                                 <h3 className="font-bold text-lg mb-1">{city}</h3>
                                 <p className="text-gray-500 text-sm">Discover fascinating facts about {city}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div> */}
+            {/* Destinations Preview */}
+            <div className="max-w-5xl mx-auto mb-12">
+                <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+                    Explore Destinations Worldwide
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {[
+                        { name: 'Paris', image: parisImage },
+                        { name: 'Tokyo', image: tokyoImage },
+                        { name: 'New York', image: newYorkImage },
+                        { name: 'Cairo', image: cairoImage },
+                        { name: 'Sydney', image: sydneyImage },
+                        { name: 'Rio de Janeiro', image: rioImage }
+                    ].map((city, index) => (
+                        <div
+                            key={index}
+                            className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105"
+                        >
+                            <div className="h-48 overflow-hidden">
+                                <img
+                                    src={city.image}
+                                    alt={`City of ${city.name}`}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="p-4">
+                                <h3 className="font-bold text-lg mb-1">{city.name}</h3>
+                                <p className="text-gray-500 text-sm">Discover fascinating facts about {city.name}</p>
                             </div>
                         </div>
                     ))}
