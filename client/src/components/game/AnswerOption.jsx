@@ -11,19 +11,20 @@ const AnswerOption = ({
     const getIcon = () => {
         if (!isRevealed) {
             return selected ?
-                <FaCircle className="text-primary-500 mr-3" /> :
-                <FaCircle className="text-gray-300 mr-3" />;
+                <FaCircle data-testid="selected-icon" className="text-primary-500 mr-3" /> :
+                <FaCircle data-testid="unselected-icon" className="text-gray-300 mr-3" />;
+
         }
 
         if (isCorrect) {
-            return <FaCheckCircle className="text-green-500 mr-3" />;
+            return <FaCheckCircle data-testid="correct-icon" className="text-green-500 mr-3" />;
         }
 
         if (selected && !isCorrect) {
-            return <FaTimesCircle className="text-red-500 mr-3" />;
+            return <FaTimesCircle data-testid="wrong-icon" className="text-red-500 mr-3" />;
         }
 
-        return <FaCircle className="text-gray-300 mr-3" />;
+        return <FaCircle data-testid="default-icon" className="text-gray-300 mr-3" />;
     };
 
     const getClassName = () => {
@@ -46,6 +47,7 @@ const AnswerOption = ({
 
     return (
         <div
+            data-testid="answer-option"
             className={getClassName()}
             onClick={() => !isRevealed && onClick(answer.id)}
         >

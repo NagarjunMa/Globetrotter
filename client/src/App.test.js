@@ -1,8 +1,24 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { GameProvider } from './context/GameContext';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders app component', () => {
+  render(
+    <AuthProvider>
+      <GameProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </GameProvider>
+    </AuthProvider>
+  );
+
+  // Modify this based on actual content in your App
+  // For example, if you have a specific element or text in your main layout
+  const appElement = screen.getByTestId('app-container');
+  expect(appElement).toBeInTheDocument();
 });

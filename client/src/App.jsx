@@ -18,32 +18,35 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <GameProvider>
-          <MainLayout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/game" element={
-                <ProtectedRoute>
-                  <Game />
-                </ProtectedRoute>
-              } />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />
-              <Route path="/challenge/:id" element={<Challenge />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </MainLayout>
-          <ToastContainer position="top-right" autoClose={3000} />
-        </GameProvider>
-      </AuthProvider>
-    </Router>
+    <div data-testid="app-container">
+      <Router>
+        <AuthProvider>
+          <GameProvider>
+            <MainLayout>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/game" element={
+                  <ProtectedRoute>
+                    <Game />
+                  </ProtectedRoute>
+                } />
+                <Route path="/profile" element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                } />
+                <Route path="/challenge/:id" element={<Challenge />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </MainLayout>
+            <ToastContainer position="top-right" autoClose={3000} />
+          </GameProvider>
+        </AuthProvider>
+      </Router>
+    </div>
+
   );
 }
 
