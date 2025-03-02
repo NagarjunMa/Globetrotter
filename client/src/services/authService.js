@@ -34,11 +34,12 @@ export const login = async (username, password) => {
 
 // Logout a user
 export const logout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  const baseUrl = process.env.PUBLIC_URL || '';
-  window.location.href = `${baseUrl}/login`;
-};
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    // Get base URL and redirect to home page
+    const baseUrl = process.env.PUBLIC_URL || '';
+    window.location.href = `${baseUrl}/`;
+  };
 
 // Get current logged in user
 export const getCurrentUser = () => {
