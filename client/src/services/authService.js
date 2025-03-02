@@ -5,6 +5,7 @@ export const register = async (username, password) => {
   try {
     console.log('API URL:', process.env.REACT_APP_API_URL);
     const response = await api.post('/auth/register', { username, password });
+    console.log('Response:', response);
     if (response.data.success) {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.data));
