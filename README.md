@@ -1,101 +1,114 @@
-# Globetrotter Backend
+# Globetrotter Challenge
 
-This is the backend server for the Globetrotter travel guessing game. It provides APIs for user authentication, game mechanics, and destination management.
+A full-stack web application that challenges users to guess famous destinations based on cryptic clues.
+
+## Project Structure
+
+```
+globetrotter/
+├── server/                 # Backend Node.js application
+│   ├── src/
+│   │   ├── config/         # Configuration files
+│   │   ├── controllers/    # Request handlers
+│   │   ├── models/         # MongoDB schemas
+│   │   ├── routes/         # API endpoints
+│   │   ├── utils/          # Helper functions
+│   │   ├── middleware/     # Custom middleware
+│   │   ├── app.js          # Express app
+│   │   └── server.js       # Server entry point
+│   ├── .env                # Environment variables
+│   └── package.json
+│
+├── client/                 # Frontend React application
+│   ├── public/
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   │   ├── auth/       # Authentication components
+│   │   │   ├── game/       # Game-related components
+│   │   │   ├── layout/     # Layout components
+│   │   │   └── common/     # Common components
+│   │   ├── context/        # React context
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API services
+│   │   └── utils/          # Utility functions
+│   ├── .env                # Environment variables
+│   └── package.json
+│
+└── README.md
+```
+
+## Core Features
+
+- User authentication and profile management
+- Random destination selection with cryptic clues
+- Multiple-choice destination guessing
+- Score tracking and game statistics
+- Social sharing for challenging friends
+- 100+ destinations from around the world
 
 ## Tech Stack
 
-- Node.js with Express
+### Backend
+- Node.js & Express
 - MongoDB with Mongoose
-- OpenAI API for destination dataset expansion
-- JWT for authentication
+- JWT authentication
+- OpenAI API for dataset expansion
 
-## Prerequisites
+### Frontend
+- React
+- React Router for navigation
+- Context API for state management
+- Tailwind CSS for styling
+- Axios for API requests
+- Framer Motion for animations
 
-- Node.js (14.x or higher)
+## Setup Instructions
+
+### Prerequisites
+- Node.js (v14+)
 - MongoDB (local or Atlas)
-- OpenAI API key
+- OpenAI API key (for dataset expansion)
 
-## Setup
+### Backend Setup
+1. Navigate to server directory: `cd server`
+2. Install dependencies: `npm install`
+3. Create a `.env` file with the following variables:
+   ```
+   PORT=8080
+   NODE_ENV=development
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   JWT_EXPIRE=30d
+   OPENAI_API_KEY=your_openai_api_key
+   ```
+4. Seed the database: `npm run seed`
+5. Start the server: `npm run dev`
 
-1. Clone the repository
-2. Install dependencies
+### Frontend Setup
+1. Navigate to client directory: `cd client`
+2. Install dependencies: `npm install`
+3. Create a `.env` file with:
+   ```
+   REACT_APP_API_URL=http://localhost:8080/api
+   ```
+4. Start development server: `npm start`
 
-```bash
-cd globetrotter/server
-npm install
-```
+## Deployment
 
-3. Configure environment variables
-   - Copy `.env.example` to `.env` (or create a new `.env` file)
-   - Fill in your MongoDB connection string and OpenAI API key
+### Deploy Backend (Render)
+1. Create a Web Service on Render
+2. Use build command: `npm install`
+3. Use start command: `node src/server.js`
+4. Add environment variables as listed in backend setup
 
-```bash
-# Server configuration
-PORT=5000
-NODE_ENV=development
+### Deploy Frontend (Render)
+1. Create a Static Site on Render
+2. Use build command: `npm install && npm run build`
+3. Set publish directory to: `build`
+4. Add environment variable: `REACT_APP_API_URL=https://your-backend-url.onrender.com/api`
 
-# MongoDB connection
-MONGO_URI=mongodb://localhost:27017/globetrotter
-# For production, use MongoDB Atlas connection string
-# MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/globetrotter
+## Testing
 
-# JWT Secret
-JWT_SECRET=your_super_secret_key_change_in_production
-JWT_EXPIRE=30d
-
-# OpenAI API Key (for dataset expansion)
-OPENAI_API_KEY=your_openai_api_key
-```
-
-4. Seed the database with destinations
-
-```bash
-npm run seed
-```
-
-This command will:
-- Import the starter dataset
-- Use OpenAI to generate additional destinations
-- You'll end up with 100+ destinations in the database
-
-5. Start the server
-
-```bash
-npm run dev
-```
-
-The server will be running at http://localhost:5000
-
-## API Endpoints
-
-### Authentication
-
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login a user
-- `GET /api/auth/me` - Get current user (requires authentication)
-- `GET /api/auth/stats/:username` - Get user stats by username
-
-### Game
-
-- `GET /api/game/destination` - Get a random destination with clues
-- `POST /api/game/answer` - Submit an answer and check if it's correct
-- `POST /api/game/challenge` - Generate a challenge link (requires authentication)
-
-### Destinations (Admin Only)
-
-- `GET /api/destinations` - Get all destinations
-- `POST /api/destinations` - Create a new destination
-- `GET /api/destinations/:id` - Get a single destination
-- `PUT /api/destinations/:id` - Update a destination
-- `DELETE /api/destinations/:id` - Delete a destination
-- `POST /api/destinations/import` - Import destinations in bulk
-
-## Running Tests
-
-```bash
-npm test
-```
-
-## License
-
-MIT
+Run backend tests: `cd server && npm test`
+Run frontend tests: `cd client && npm test`
