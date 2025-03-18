@@ -1,6 +1,7 @@
 const Destination = require('../models/Destination');
 const User = require('../models/User');
 const { ErrorResponse } = require('../utils/errorHandler');
+const dotenv = require('dotenv');
 
 /**
  * @desc    Get a random destination with clues for the game
@@ -138,27 +139,28 @@ exports.submitAnswer = async (req, res, next) => {
  * @access  Private
  */
 exports.generateChallenge = async (req, res, next) => {
-  try {
-    const { username } = req.user;
-    
-    // Generate a unique challenge ID
-    const challengeId = Math.random().toString(36).substring(2, 15) + 
-                         Math.random().toString(36).substring(2, 15);
-    
-    // Return challenge details
-    res.status(200).json({
-      success: true,
-      data: {
-        challengeId,
-        challengeLink: `${req.protocol}://${req.get('host')}/challenge/${challengeId}`,
-        username,
-        stats: req.user.gameStats
-      }
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: 'Error generating challenge'
-    });
-  }
-};
+    try {
+      const { username } = req.user;
+      const clientURL = process.env.CLIENT_URL || 'https://globetrotter-client.onrender.com';
+      
+      // Include username in challenge ID
+      const challengeId = `${username}-${Math.random().toString(36).substring(2, 10)}`;
+      
+      res.status(200).json({
+        success: true,
+        data: {
+          challengeId,
+          challengeLink: `${clientURL}/challenge/${challengeId}`,
+          username,
+          stats: req.user.gameStats
+        }
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: 'Error generating challenge'
+      });
+    }
+  };
+
+  

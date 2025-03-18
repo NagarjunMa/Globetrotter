@@ -25,7 +25,7 @@ const ChallengeShare = ({ challengeData, onClose }) => {
     };
 
     const copyLink = () => {
-        navigator.clipboard.writeText(challengeLink);
+        navigator.clipboard.writeText(challengeData.challengeLink);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -89,11 +89,11 @@ const ChallengeShare = ({ challengeData, onClose }) => {
 
                             <div className="flex mb-4">
                                 <WhatsappShareButton
-                                    url={challengeLink}
-                                    title={`${username} challenges you to beat their Globetrotter score of ${stats.score}! Can you top it?`}
+                                    url={challengeData.challengeLink}
+                                    title={`${challengeData.username} challenges you to beat their Globetrotter score of ${challengeData.stats.score}! Can you top it?`}
                                     className="flex-1 mr-2"
                                 >
-                                    <button className="btn bg-green-500 hover:bg-green-600 text-white w-full flex items-center justify-center">
+                                    <button className="btn bg-green-500 hover:bg-green-600 text-white w-full">
                                         <FaWhatsapp className="mr-2" />
                                         Share on WhatsApp
                                     </button>
