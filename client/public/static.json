@@ -1,0 +1,28 @@
+{
+    "routes": [
+        {
+            "src": "/challenge/.*",
+            "dest": "/index.html"
+        },
+        {
+            "src": "/login",
+            "dest": "/index.html"
+        },
+        {
+            "src": "/register",
+            "dest": "/index.html"
+        },
+        {
+            "src": "/game",
+            "dest": "/index.html"
+        },
+        {
+            "src": "/profile",
+            "dest": "/index.html"
+        },
+        {
+            "src": "/",
+            "dest": "/index.html"
+        }
+    ]
+}
